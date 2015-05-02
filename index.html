@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Clonebase</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	
+	<link href='http://fonts.googleapis.com/css?family=Comfortaa:400,700' rel='stylesheet' type='text/css'>
+
+	<link href='http://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
+
+</head>
+<body>
+
+	<div class="nav-wrapper">
+		<nav>
+			<ul>
+				<li><h1 class="logo"><strong>CLONEBASE</strong></h1></li>
+				<li class="nav-links"><a href="#home">Home</a></li>
+				<li class="nav-links"><a href="#about">About</a></li>
+				<li class="nav-links"><a href="companies.html">Search</a></li>
+				<li class="nav-links"><a href="#contact">Contact</a></li>
+			</ul>
+		</nav>
+	</div>
+
+
+	<section id="home" data-stellar-background-ratio="0.5">
+		
+		<div class="container">
+		<h3>Welcome to Clonebase: Search for Your Company Below</h3>
+
+		<input id="search" type="search"><p id="search-p"><a href="#contact">Can't find your company? I'm only one person, help me out.</a></p></input>
+
+		<div class="row">
+			<div class="col-md-6" id="company_profile"> 
+				<h4>Company Profile</h4>
+				<div class="box">
+					<img src="img/buffer_550w.jpg">
+				</div>
+			</div>
+
+			<div class="col-md-6" id="competitor_slider">
+				<h4>Competitor Profiles</h4>
+				<div class="box">
+					<ul>
+						<li><img src="img/sproutsocial_550w.jpg" alt=""></li>
+						<li><img src="img/hootsuite_550w.jpg" alt=""></li>
+						<li><img src="img/spredfast_550w.jpg" alt=""></li>
+					</ul>
+
+					<button id="forward">View more</button>
+				</div>
+			</div>
+		</div>
+
+	</section>
+
+	<section id="about" data-stellar-background-ratio="0.5">
+		<br><br>
+		<div id="about-para">
+		<h2>Clonebase gives you a sneak peak at competitor startups so you: </h2>		
+		<ul>
+			<li>As a Startup Founder - Have a better idea of what your competition looks like and whether there might be a copycat out there.</li>
+			<li>As a User / Customer - Are able to compare competing products before you chose one over the other and potential lose out on money or (more importantly) time.</li>
+			<li>As an Investor - Cut your duediligence time down and invest where your chances are highest for a bigger return.</li>
+		</ul>
+		</div>
+		<img id="copycat-img" src="img/copycat-competitors.jpg" alt="">
+		<div id="about-para">
+		<h3>Have a suggestion for us? Reach out via our <a href="#contact">contact form</a> or on <a href="http://www.twitter.com/luisamariethm">Twitter</a>.</h3>  
+		</div>
+	</section>
+
+	<section id="contact" data-stellar-background-ratio="0.5">
+
+	<form id="contact-form">
+		<div class="form-group">
+			<label>Name</label>
+			<input></input>
+		</div>
+		<div class="form-group">
+			<label>Email Address</label>
+			<input type="email" class="form-control" placeholder="Enter email"></input>
+		</div>
+		<div class="checkbox">
+			<label>
+			<input id="checkbox" type="checkbox" value="company_correction">
+			Company Correction
+			</label>
+		</div>
+		<div class="checkbox">
+			<label>
+			<input id="checkbox" type="checkbox" value="new_company">
+			New Company
+			</label>
+		</div>
+		<div class="checkbox">
+			<label>
+			<input id="checkbox" type="checkbox" value="help_out">
+			Help Out
+			</label>
+		</div>
+		<div class="form-group">
+			<label id="textarea-label">So, what's cooking that noggin of yours?</label>
+			<textarea class="form-control" rows="4"></textarea>
+		</div>
+			<input type="submit" value="Submit" id="submit-button"></input>
+	</form>
+
+	</section>
+
+	<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script type="text/javascript" src="js/tabletop.js"></script>
+	<script type="text/javascript" src="js/jquery.stellar.min.js"></script>
+	<script type="text/javascript" src="js/jquery.scrollTo.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+	
+
+	<script type="text/javascript">
+	  window.onload = function() { init() };
+
+	  var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/126ObPPlqQh0XG7ZQCMhiM8kBKwibtplNqOLQVkt5bKc/pubhtml';
+
+	  function init() {
+	    Tabletop.init( { key: public_spreadsheet_url,
+	                     callback: showInfo,
+	                     simpleSheet: true } )
+	  }
+
+	  function showInfo(data, tabletop) {
+	    console.log(data);
+	  }
+	</script>
+
+
+</body>
+</html>
