@@ -1,3 +1,9 @@
+
+function parseQueryString() {
+	return _.object(_.compact(_.map(location.search.slice(1).split('&'), function(item) {  if (item) return item.split('='); })));
+}
+
+
 var CompanyDir = new Backbone.Marionette.Application();
 
 
@@ -40,6 +46,17 @@ CompanyDir.addInitializer(function () {
 		simpleSheet: true
 	})
 
+	CompanyDir.queryParams = parseQueryString();
+
+	// Search Events
+		// check for GET term on load
+			// if something exists - run FindSearchTerm function
+			// if nothing exists - do nothing
+		// look for Submit event 
+			// if event occurs - run FindSearchTerm function
+				// save SearchTerm in $GET and update URL
+			// if no event occurs - do nothing
+
 	// User enters Company to search
 	// Check if searched company is in database 
 		// if it is 
@@ -58,8 +75,10 @@ CompanyDir.addInitializer(function () {
 	function showInfo(data, tabletop) {
 		CompanyDir.companies = new Companies(data)
 
+		queryString = window.location.search;
+
 		var companySearched,
-		    searchTerm = "buffer";
+		    searchTerm = CompanyDir.queryParams.company;
 
 		companySearched = CompanyDir.companies.find(function(model) {
 			return model.get('company_name') == searchTerm;
