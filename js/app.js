@@ -84,6 +84,8 @@ CompanyDir.addInitializer(function () {
 			return model.get('company_name') == searchTerm;
 		});
 
+		
+
 		var searchedCompetitors = [];
 
 		searchedCompetitors = new Competitors(CompanyDir.companies.select(function(model) {
