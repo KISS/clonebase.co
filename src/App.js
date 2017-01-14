@@ -21,86 +21,106 @@ class App extends Component {
     };
   }
 
-  showCompetitors(competitors) {
+  var CompanyCompetitor = React.createClass({
 
-    var competitors = this.state.companyCompetitors;
-
-    {/*
-      var competitorState = this;
-
-      competitorState.state = {
-        companyName: 'test',
-        companyRole: 'companyRole2',
-        companyWebsite2: 'companyWebsite2',
-        companyLogo2: 'companyLogo2',
-        companyState2: 'companyState2',
-        companyCountry2: 'companyCountry2',
-        companyDescription2: 'companyDescription2',
-        companyCompetitors2: 'companyCompetitors2'
-      };
-    */}
-
-    // console.log("competitors02: " + this.state.companyCompetitors);
-
-    var competitorList = [];
-
-    for (var i = 0; i < competitors.length; i++) {
-
-      //  Need to setState and update based on each item in competitorList (each one needs to be passed in as companyToShow)
-      //  this works but need to do the above ^
-      var competitorToShow = this.state.companyName;
-
-      {/*
-        // something like this.. just need access to these data points so I can display it
-        const rootRef = firebase.database().ref();
-        const organizationRef = rootRef.child('organization');
-        const companyToShow = organizationRef.child('twitter');
-        const companyName = companyToShow.child('name');
-
-        companyName.on('value', snap => {
-          competitorState.setState({
-            companyName: snap.val()
-          });
-        });
-      */}
-
-      competitorList.push(
-        <ul key={i}> {competitors[i]}
-
-          {/* 'this' refers to company being searched and not each competitor being shown,
-               need 'this' to refer to each competitor and then display their information  */}
-          <br/> -> {competitorToShow}
-        </ul>
-
+    render: function() {
+      return (
+        <li> {this.props.competitor} </li>
       );
     }
 
-    return <div> Competitor List: <ul> {competitorList} </ul> </div>;
-  }
-
-  showCompetitorInfo() {
-    // this.showCompetitors().bind(this);
-
-    // trying to change 'this' binding...
-
-    {/* this.showCompetitors('twitter'); */}
-
-    return <div> blaah </div>
-  }
+  });
 
 
+  var CompanyCompetitorList = React.createClass({
 
-  // Lifecycle method of Component, called only once, right after, it's been rendered to the DOM
-  // Contains ref to realtime database
+    render: function() {
+      return (
+        <ul> {this.props.competitors} </ul>
+      );
+    }
+
+  });
+
+
+  var CompanyDetails = React.createClass({
+
+    render: function() {
+
+      var logo = <img className='company_logo' src={this.props.company.companyLogo} alt={this.props.company.companyName} />
+      var name = <h2>{this.state.companyName}</h2>
+      var primaryRole = <div>{this.props.company.companyRole}</div>
+      var location = <div>{this.props.company.companyState}, {this.props.company.companyCountry}</div>
+      var website = <div><a href={this.props.company.companyWebsite}>{this.props.company.companyWebsite}</a></div>
+      var description = <div>{this.props.company.companyDescription}</div>
+
+      return (
+        <div>
+          {logo}
+          {name}
+          {primparyRole}
+          {location}
+          {website}
+          {description}
+        </div>
+      );
+    }
+
+  });
+
+
+  var CompanyProfile = React.createClass({
+
+    render: function() {
+
+      var competitorList = [];
+      var lastCompetitor = null;
+
+      this.props.companies.forEach(function(company) {
+        if (company.competitor !== lastCompetitor) {
+          competitorList.push(<CompanyCompetitor competitor={company.organization.competitor} key={company.competitor} />);
+        }
+        lastCategory = company.competitor;
+      });
+
+      return (
+        <h1>Company Profile</h1>
+      );
+    }
+
+  });
+
+
+  var SearchBar = React.createClass({
+
+    render: function() {
+      return (
+        <form>
+          <input type="text" placeholder="Search..." />
+        </form>
+      );
+    }
+
+  });
+
+
+  var FilterableCompanySearch = React.createClass({
+
+    render: function() {
+      return (
+        <SearchBar/>
+        <CompanyProfile companies={this.props.companies} />
+      );
+    }
+
+  });
+
+
+
+  // DATA
   componentDidMount() {
     const rootRef = firebase.database().ref();
     const organizationRef = rootRef.child('organization');
-    // const organizationRoleRef = organizationRef.child('primary_role');
-    // const companyRef = organizationRoleRef.child('company');
-    // const investorRef = organizationRoleRef.child('investor');
-
-    // TODO:: company/{insert company name} => convert to lowercase
-
     const companyToShow = organizationRef.child('digg');
     const companyName = companyToShow.child('name');
     const companyRole = companyToShow.child('primary_role');
@@ -111,13 +131,7 @@ class App extends Component {
     const companyDescription = companyToShow.child('short_description');
     const companyCompetitors = companyToShow.child('competitors');
 
-    // console.log("company name " + companyName)
 
-
-    // .on() method is what allows us to synchronize data in realtime
-    // ** should always be attached to a reference that points at a spot in the database
-
-    // snap is a callback function, using arrow functions from ES6
     companyName.on('value', snap => {
       this.setState({
         companyName: snap.val()
@@ -166,50 +180,21 @@ class App extends Component {
     });
   }
 
-  render() {
 
+
+  render() {
     return (
       <div className="App">
-        <div className="App-header">
-          {/* <img src={logo} className="App-logo" alt="logo" /> */}
-          <h2>Clonebase</h2>
-        </div>
-        <h1> {this.state.companyName} </h1>
-        <img className='company_logo' src={this.state.companyLogo} alt={this.state.companyName} />
-        <p>  Primary role: {this.state.companyRole} </p>
-        <p>  Website: <a href={this.state.companyWebsite}>{this.state.companyWebsite}</a> </p>
-        <p>  Location (remove? - not really important..): {this.state.companyState}, {this.state.companyCountry} </p>
-        <p>  Description: {this.state.companyDescription} </p>
 
-        { this.showCompetitors() }
+        <FilterableCompanySearch/>
 
-        {/* <CompetitorList/> */}
       </div>
     );
   }
+
 }
 
-{/*
-  var CompetitorList = React.createClass({
-
-  // Need to be able access information in db to render in main view
-    // want to do this for company profile and competitors
-
-  // Competitors
-    // show list of competitiors
-    // on click, display competitor profile (fade in from bottom ? )
-    render: function() {
-      return (
-        <div>
-          Competitors (testing)
-          <ul>
-            <li> Competitor One </li>
-            <li> Competitior Two </li>
-          </ul>
-        </div>
-      );
-    }
-  });
-*/}
 
 export default App;
+
+
