@@ -5,30 +5,6 @@ import ReactDOM from 'react-dom';
 import * as firebase from "firebase";
 
 
-{/*
-var CompanyCompetitor = React.createClass({
-
-  render: function() {
-    return (
-      <li> {this.props.competitor} </li>
-    );
-  }
-
-});
-
-
-var CompanyCompetitorList = React.createClass({
-
-  render: function() {
-    return (
-      <ul> {this.props.competitors} </ul>
-    );
-  }
-
-});
-*/}
-
-
 var showCompetitors = function(companies) {
 
   var competitorsToShow = companies;
@@ -75,9 +51,9 @@ function showCompetitorMaches(companiesAll, competitors) {
 }
 
 
-var CompetitorProfile = React.createClass({
+class CompetitorProfile extends React.Component {
 
-  render: function() {
+  render() {
 
     var logo = <img className='company_logo' src={this.props.company.profile_image_url} alt={this.props.company.name} />
     var name = <h2>{this.props.company.company_name}</h2>
@@ -98,12 +74,12 @@ var CompetitorProfile = React.createClass({
 
     );
   }
-});
+};
 
 
-var CompetitorDetails = React.createClass({
+class CompetitorDetails extends React.Component {
 
-  render: function() {
+  render() {
 
     var outcome = showCompetitorMaches( showCompetitors(this.props.companies), competitorProfilesList);
 
@@ -114,15 +90,15 @@ var CompetitorDetails = React.createClass({
     );
   }
 
-});
+};
 
 
 //TODO:: maintain state elsewhere
 var competitorProfilesList = [];
 
-var CompanyDetails = React.createClass({
+class CompanyDetails extends React.Component {
 
-  render: function() {
+  render() {
 
     var logo = <img className='company_logo' src={this.props.company.profile_image_url} alt={this.props.company.name} />
     var name = <h2>{this.props.company.name}</h2>
@@ -149,7 +125,7 @@ var CompanyDetails = React.createClass({
     );
   }
 
-});
+};
 
 
 function listCompetitors(companyToList) {
@@ -179,14 +155,12 @@ function listCompetitors(companyToList) {
 }
 
 
-var CompanyProfile = React.createClass({
+class CompanyProfile extends React.Component {
 
-  render: function() {
+  render() {
 
     var companyToShow = [];
-
-    {/* search bar parameter */}
-    var companyToFind = 'twitter';
+    var companyToFind = this.props.filterText;
 
     this.props.companies.forEach(function(company) {
 
@@ -203,36 +177,64 @@ var CompanyProfile = React.createClass({
     );
   }
 
-});
+};
 
 
-var SearchBar = React.createClass({
+class SearchBar extends React.Component {
 
-  render: function() {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange() {
+    this.props.onUserInput(
+      this.filterTextInput.value,
+    );
+  }
+
+  render() {
     return (
       <form>
-        <input type="text" placeholder="Search..." />
+        <input type="text" placeholder="Search..." value={this.props.filterText}
+          ref={(input) => this.filterTextInput = input}
+          onChange={this.handleChange} />
       </form>
     );
   }
 
-});
+};
 
 
-var FilterableCompanySearch = React.createClass({
+class FilterableCompanySearch extends React.Component {
 
-  render: function() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      filterText: 'facebook'
+    };
+
+    this.handleUserInput = this.handleUserInput.bind(this);
+  }
+
+  handleUserInput(filterText) {
+    this.setState({
+      filterText: filterText,
+    });
+  }
+
+  render() {
     return (
       <div className="App">
-        <SearchBar/>
-        <CompanyProfile companies={this.props.companies} />
+        <SearchBar filterText={this.state.filterText} />
+        <CompanyProfile companies={this.props.companies} filterText={this.state.filterText} />
         <CompetitorDetails companies={this.props.companies} />
         <showCompetitors/>
       </div>
     );
   }
 
-});
+};
 
 
 var COMPANIES = [
