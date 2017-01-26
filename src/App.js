@@ -108,6 +108,10 @@ class CompanyDetails extends React.Component {
     var description = <div>{this.props.company.short_description}</div>
     var competitorsAll = this.props.company.competitors;
 
+    if (competitorProfilesList.length > 0) {
+      competitorProfilesList = [];
+    }
+
     for (var i = 0; i < competitorsAll.length; i++) {
       competitorProfilesList.push(  this.props.company.competitors[i]  );
     }
@@ -211,7 +215,7 @@ class FilterableCompanySearch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filterText: 'facebook'
+      filterText: ''
     };
 
     this.handleUserInput = this.handleUserInput.bind(this);
@@ -219,14 +223,14 @@ class FilterableCompanySearch extends React.Component {
 
   handleUserInput(filterText) {
     this.setState({
-      filterText: filterText,
+      filterText: filterText
     });
   }
 
   render() {
     return (
       <div className="App">
-        <SearchBar filterText={this.state.filterText} />
+        <SearchBar filterText={this.state.filterText} onUserInput = {this.handleUserInput} />
         <CompanyProfile companies={this.props.companies} filterText={this.state.filterText} />
         <CompetitorDetails companies={this.props.companies} />
         <showCompetitors/>
