@@ -85,7 +85,7 @@ class CompetitorDetails extends React.Component {
 
     return (
       <div>
-        { outcome }
+        {outcome}
       </div>
     );
   }
@@ -167,7 +167,6 @@ class CompanyProfile extends React.Component {
     var companyToFind = this.props.filterText;
 
     this.props.companies.forEach(function(company) {
-
       if (company.company_name == companyToFind) {
         companyToShow.push( <CompanyDetails company={company} key={company} /> );
       }
@@ -188,21 +187,28 @@ class SearchBar extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {value: ''};
+
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange() {
-    this.props.onUserInput(
-      this.filterTextInput.value,
-    );
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    this.props.onUserInput(this.filterTextInput.value);
+    event.preventDefault();
   }
 
   render() {
     return (
-      <form>
-        <input type="text" placeholder="Search..." value={this.props.filterText}
+      <form onSubmit={this.handleSubmit}>
+        <input type="text" placeholder="Search..." value={this.props.value}
           ref={(input) => this.filterTextInput = input}
           onChange={this.handleChange} />
+        <input type="submit" value="submit" />
       </form>
     );
   }
@@ -220,7 +226,6 @@ class FilterableCompanySearch extends React.Component {
 
     this.handleUserInput = this.handleUserInput.bind(this);
   }
-
   handleUserInput(filterText) {
     this.setState({
       filterText: filterText
@@ -230,7 +235,7 @@ class FilterableCompanySearch extends React.Component {
   render() {
     return (
       <div className="App">
-        <SearchBar filterText={this.state.filterText} onUserInput = {this.handleUserInput} />
+        <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput} />
         <CompanyProfile companies={this.props.companies} filterText={this.state.filterText} />
         <CompetitorDetails companies={this.props.companies} />
         <showCompetitors/>
