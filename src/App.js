@@ -198,7 +198,7 @@ class SearchBar extends React.Component {
   }
 
   handleSubmit(event) {
-    this.props.onUserInput(this.filterTextInput.value);
+    this.props.onUserInput(this.filterTextInput.value.toLowerCase());
     event.preventDefault();
   }
 
@@ -257,6 +257,6 @@ var COMPANIES = [
 
 ReactDOM.render(
   <FilterableCompanySearch companies={COMPANIES} />,
-  document.getElementById('company-profile')
+  document.getElementById('root')
 );
 
