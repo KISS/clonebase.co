@@ -1,23 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import { Provider } from 'react-redux';
+import DataContainer from './data_container';
+import store from './store';
 import './index.css';
-import * as firebase from "firebase";
 
-// Initialize Firebase
-var config = {
-  apiKey: "XXX",
-  authDomain: "XXX.firebaseapp.com",
-  databaseURL: "https://XXX.firebaseio.com",
-  storageBucket: "XXX.appspot.com",
-  messagingSenderId: "XXX"
-};
-firebase.initializeApp(config);
 
-// Get a reference to the database service
-// var database = firebase.database();
-
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
+const main = (
+  <Provider store={store}>
+    <DataContainer />
+  </Provider>
 );
+
+ReactDOM.render(main, document.getElementById('root'));
